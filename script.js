@@ -26,7 +26,9 @@ mopidy.on("event:trackPlaybackStarted", function (event) {
   cmd.kill('SIGHUP');
 
   // respawn
-  cmd = childProcess.spawn("sox -t mp3 /usr/share/jukebox/media/" + uri + " -t wav - | sudo ~/PiFmRds/src/pi_fm_rds -audio -");
+  command = "sox -t mp3 /usr/share/jukebox/media/" + uri + " -t wav - | sudo ~/PiFmRds/src/pi_fm_rds -audio -";
+  console.log(command);
+  cmd = childProcess.spawn(command);
   
   cmd.stdout.on('data', function (data) {
     console.log('stdout: ' + data);
