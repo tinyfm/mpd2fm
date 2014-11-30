@@ -15,19 +15,22 @@ var mopidy = new Mopidy({
 // mopidy.on(console.log.bind(console));
 
 var pifm = childProcess.spawn('ls', ['-l']);
+var sox = childProcess.spawn('ls', ['-l']);
 
 mopidy.on("event:trackPlaybackStarted", function (event) {
   // catch the uri
+  var uri = event.tl_track.track.uri.split(":").pop();
+  console.log("-----------------------------------");
   console.log("New song:");
-  var urichunk = event.tl_track.track.uri.split(":");
-  var uri = urichunk[urichunk.length - 1];
+  console.log(uri);
 
   // kill 
-  pifm.kill('SIGHUP');
+  pifm.kill();
+  // sox.kill();
+
 
   // respawn
-  // var sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-"]);
-  // var sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-"]);
+  // sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-r", "22050", "-"]);
   pifm = childProcess.spawn("/home/pi/PiFmRds/src/pi_fm_rds", ["-audio", "/usr/share/jukebox/media/" + uri]);
 
   // sox.stdout.on('data', function (data) {
@@ -44,7 +47,7 @@ mopidy.on("event:trackPlaybackStarted", function (event) {
   //   }
   //   pifm.stdin.end();
   // });
-  
+
   pifm.stdout.on('data', function (data) {
     console.log('stdout: ' + data);
   });
@@ -55,6 +58,13 @@ mopidy.on("event:trackPlaybackStarted", function (event) {
 
   pifm.on('close', function (code) {
     console.log('child process exited with code ' + code);
+  });
+
+  // process.on('exit', function () {
+  //     sox.kill();
+  // });
+  process.on('exit', function () {
+      pifm.kill();
   });
 
 }, logErrors);
