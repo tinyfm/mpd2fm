@@ -20,28 +20,40 @@ mopidy.on("event:trackPlaybackStarted", function (event) {
   // catch the uri
   console.log("New song:");
   var urichunk = event.tl_track.track.uri.split(":");
-  var uri = urichunk[len(urichunk-1)];
-  console.log(uri);
+  var uri = urichunk[urichunk.length - 1];
 
   // kill 
   cmd.kill('SIGHUP');
 
   // respawn
-  command = "sox -t mp3 /usr/share/jukebox/media/" + uri + " -t wav - | ~/PiFmRds/src/pi_fm_rds -audio -";
-  console.log(command);
-  cmd = childProcess.spawn(command);
+  var sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-"]);
+  var pifm = childProcess.spawn("/home/pi/PiFmRds/src/pi_fm_rds", ["-audio", "-"]);
+
+  sox.stdout.on('data', function (data) {
+    pifm.stdin.write(data);
+  });
+
+  sox.stderr.on('data', function (data) {
+    console.log('sox stderr: ' + data);
+  });
+
+  sox.on('close', function (code) {
+    if (code !== 0) {
+      console.log('sox process exited with code ' + code);
+    }
+    pifm.stdin.end();
+  });
   
-  cmd.stdout.on('data', function (data) {
+  pifm.stdout.on('data', function (data) {
     console.log('stdout: ' + data);
   });
 
-  cmd.stderr.on('data', function (data) {
+  pifm.stderr.on('data', function (data) {
     console.log('stderr: ' + data);
   });
 
-  cmd.on('close', function (code) {
+  pifm.on('close', function (code) {
     console.log('child process exited with code ' + code);
   });
 
 }, logErrors);
-
