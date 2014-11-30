@@ -20,7 +20,7 @@ mopidy.on("event:trackPlaybackStarted", function (event) {
   // catch the uri
   console.log("New song:");
   var urichunk = event.tl_track.track.uri.split(":");
-  var uri = urichunk[len(urichunk)];
+  var uri = urichunk[len(urichunk-1)];
   console.log(uri);
 
   // kill 
