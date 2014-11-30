@@ -1,8 +1,7 @@
 'use strict';
 
+var childProcess = require('child_process');
 var Mopidy = require('mopidy');
-var when = require('when');
-var utils = require('util');
 
 function logErrors(err){
   console.error(err);
@@ -15,7 +14,31 @@ var mopidy = new Mopidy({
 
 // mopidy.on(console.log.bind(console));
 
+var cmd = childProcess.spawn('ls', ['-l']);
+
 mopidy.on("event:trackPlaybackStarted", function (event) {
-  console.log(event.tl_track.track.uri)
+  // catch the uri
+  console.log("New song:");
+  var uri = event.tl_track.track.uri;
+  console.log(uri);
+
+  // kill 
+  cmd.kill('SIGHUP');
+
+  // respawn
+  cmd = childProcess.spawn('tail', ['-l']);
+  
+  cmd.stdout.on('data', function (data) {
+    console.log('stdout: ' + data);
+  });
+
+  cmd.stderr.on('data', function (data) {
+    console.log('stderr: ' + data);
+  });
+
+  cmd.on('close', function (code) {
+    console.log('child process exited with code ' + code);
+  });
+
 }, logErrors);
 
