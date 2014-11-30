@@ -16,6 +16,6 @@ var mopidy = new Mopidy({
 // mopidy.on(console.log.bind(console));
 
 mopidy.on("event:trackPlaybackStarted", function (event) {
-  console.log(event.tl_track.uri)
+  console.log(event.tl_track.track.uri)
 }, logErrors);
 
