@@ -13,38 +13,40 @@ var mopidy = new Mopidy({
   webSocketUrl: 'ws://' + (process.env.HOST || 'localhost') + ':6680/mopidy/ws/'
 });
 
-mopidy.on("state:online", function () {
-  accumulateTracksInDirs([], [null])
-  .then(function(trackUris){
-    return mopidy.library.search({ uris: trackUris }).then(function(results){
-      console.log(utils.inspect(results[0].tracks));
-    })
-  })
-  .then(process.exit.bind(process, 0));
-}, logErrors);
+mopidy.on(console.log.bind(console));
 
-var getTracksFromRefs = getTypeFromRefs.bind(null, 'track');
-var getDirsFromRefs = getTypeFromRefs.bind(null, 'directory');
+// mopidy.on("state:online", function () {
+//   accumulateTracksInDirs([], [null])
+//   .then(function(trackUris){
+//     return mopidy.library.search({ uris: trackUris }).then(function(results){
+//       console.log(utils.inspect(results[0].tracks));
+//     })
+//   })
+//   .then(process.exit.bind(process, 0));
+// }, logErrors);
 
-function getTypeFromRefs(type, refs){
-  return refs.filter(function(ref){
-    return ref.type === type;
-  })
-  .map(function(ref){
-    return ref.uri;
-  });
-}
+// var getTracksFromRefs = getTypeFromRefs.bind(null, 'track');
+// var getDirsFromRefs = getTypeFromRefs.bind(null, 'directory');
 
-function accumulateTracksInDirs(allTracks, dirs){
-  return when.all(dirs.map(function(dir){ return mopidy.library.browse({ uri: dir }) }))
-    .spread(function(results){
-      if (!results){
-        return allTracks;
-      }
+// function getTypeFromRefs(type, refs){
+//   return refs.filter(function(ref){
+//     return ref.type === type;
+//   })
+//   .map(function(ref){
+//     return ref.uri;
+//   });
+// }
 
-      var tracks = allTracks.concat(getTracksFromRefs(results));
-      var dirs = getDirsFromRefs(results);
+// function accumulateTracksInDirs(allTracks, dirs){
+//   return when.all(dirs.map(function(dir){ return mopidy.library.browse({ uri: dir }) }))
+//     .spread(function(results){
+//       if (!results){
+//         return allTracks;
+//       }
 
-      return accumulateTracksInDirs(tracks, dirs);
-    })
-}
+//       var tracks = allTracks.concat(getTracksFromRefs(results));
+//       var dirs = getDirsFromRefs(results);
+
+//       return accumulateTracksInDirs(tracks, dirs);
+//     })
+// }
