@@ -14,7 +14,7 @@ var mopidy = new Mopidy({
 
 // mopidy.on(console.log.bind(console));
 
-var cmd = childProcess.spawn('ls', ['-l']);
+var pifm = childProcess.spawn('ls', ['-l']);
 
 mopidy.on("event:trackPlaybackStarted", function (event) {
   // catch the uri
@@ -23,13 +23,12 @@ mopidy.on("event:trackPlaybackStarted", function (event) {
   var uri = urichunk[urichunk.length - 1];
 
   // kill 
-  cmd.kill('SIGHUP');
+  pifm.kill('SIGHUP');
 
   // respawn
   // var sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-"]);
-  // var sox = childProcess.spawn("avconv", ["-i", "/usr/share/jukebox/media/" + uri, "-ac", "1", "-ar", "22050", "-b", "352k", "-f", "wav", "-"]);
-  // var pifm = childProcess.spawn("/home/pi/PiFmRds/src/pi_fm_rds", ["-audio", "-"]);
-  var pifm = childProcess.spawn("/home/pi/PiFmRds/src/pi_fm_rds", ["-audio", "/usr/share/jukebox/media/" + uri]);
+  // var sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-"]);
+  pifm = childProcess.spawn("/home/pi/PiFmRds/src/pi_fm_rds", ["-audio", "/usr/share/jukebox/media/" + uri]);
 
   // sox.stdout.on('data', function (data) {
   //   pifm.stdin.write(data);
