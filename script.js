@@ -19,14 +19,15 @@ var cmd = childProcess.spawn('ls', ['-l']);
 mopidy.on("event:trackPlaybackStarted", function (event) {
   // catch the uri
   console.log("New song:");
-  var uri = event.tl_track.track.uri;
+  var urichunk = event.tl_track.track.uri.split(":");
+  var uri = urichunk[len(urichunk)];
   console.log(uri);
 
   // kill 
   cmd.kill('SIGHUP');
 
   // respawn
-  command = "sox -t mp3 /usr/share/jukebox/media/" + uri + " -t wav - | sudo ~/PiFmRds/src/pi_fm_rds -audio -";
+  command = "sox -t mp3 /usr/share/jukebox/media/" + uri + " -t wav - | ~/PiFmRds/src/pi_fm_rds -audio -";
   console.log(command);
   cmd = childProcess.spawn(command);
   
