@@ -26,7 +26,8 @@ mopidy.on("event:trackPlaybackStarted", function (event) {
   cmd.kill('SIGHUP');
 
   // respawn
-  var sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-"]);
+  // var sox = childProcess.spawn("sox",["-t", "mp3", "/usr/share/jukebox/media/" + uri, "-t", "wav", "-"]);
+  var sox = childProcess.spawn("ffmpeg", ["-i", "/usr/share/jukebox/media/" + uri, "-f", "s16le", "-ar", "22.05k", "-ac", "1", "-"]);
   var pifm = childProcess.spawn("/home/pi/PiFmRds/src/pi_fm_rds", ["-audio", "-"]);
 
   sox.stdout.on('data', function (data) {
