@@ -1,7 +1,7 @@
 {
-  "name": "fm",
+  "name": "mpd2fm",
   "version": "1.0.0",
-  "description": "> Al Jazeera [Canvas hackaton](http://canvas.aljazeera.com) Vagrant box of the *rpi* content.",
+  "description": "tinyfm mdp to FM transmitter bridge.",
   "main": "index.js",
   "dependencies": {
     "mopidy": "^0.4.1",
@@ -13,12 +13,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/vallettea/frenchbox-fm.git"
+    "url": "https://github.com/tinyfm/mpd2fm.git"
   },
   "author": "",
   "license": "Apache-2",
   "bugs": {
-    "url": "https://github.com/vallettea/frenchbox-fm/issues"
+    "url": "https://github.com/tinyfm/mpd2fm/issues"
   },
-  "homepage": "https://github.com/vallettea/frenchbox-fm"
+  "homepage": "https://github.com/tinyfm/mpd2fm"
 }
