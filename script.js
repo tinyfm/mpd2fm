@@ -12,7 +12,7 @@ var mopidy = new Mopidy({
 var pifm = childProcess.spawn('ls', ['-l']);
 
 // path is expected to be something like /home/pi/PiFmRds/src/pi_fm_rds
-var pifmPath = require.resolve(path.join('home', 'pi', 'PiFmRds', 'src', 'pi_fm_rds'));
+var pifmPath = require.resolve(path.join('/', 'home', 'pi', 'PiFmRds', 'src', 'pi_fm_rds'));
 
 mopidy.on("event:trackPlaybackStarted", function (event) {
   // catch the uri
