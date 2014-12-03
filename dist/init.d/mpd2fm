@@ -1,6 +1,6 @@
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides:          tinyfm-mpd2fm
+# Provides:          mpd2fm
 # Required-Start:    $remote_fs $syslog
 # Required-Stop:     $remote_fs $syslog
 # Default-Start:     2 3 4 5
@@ -11,14 +11,12 @@
 
 # Author: tinyfm
 
-# Do NOT "set -e"
-
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 DESC="Description of the service"
 NAME=mpd2fm
-DAEMON=/usr/bin/node
-DAEMON_ARGS="$HOME/mpd2fm/script.js"
+DAEMON=/usr/local/bin/node
+DAEMON_ARGS="/home/pi/mpd2fm/script.js"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
