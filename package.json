@@ -2,10 +2,13 @@
   "name": "mpd2fm",
   "version": "1.0.0",
   "description": "tinyfm mdp to FM transmitter bridge.",
-  "main": "index.js",
+  "main": "./lib/encoder.js",
   "dependencies": {
     "mopidy": "^0.4.1",
     "when": "^3.6.3"
+  },
+  "bin": {
+    "mpd2fm": "./bin/daemon.js"
   },
   "devDependencies": {},
   "scripts": {
