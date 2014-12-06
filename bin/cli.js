@@ -38,14 +38,14 @@ if (argv.start) {
     webSocketUrl: 'ws://' + (process.env.HOST || 'localhost') + ':6680/mopidy/ws/'
   });
 
-  var broadcast = encoder({ env: 'test' });
+  var broadcast = encoder({ baseDir: argv.baseDir, env: 'test' });
   var currentStream;
 
   mopidy.on("event:trackPlaybackStarted", function (event) {
     // catch the uri
     var filepath = event.tl_track.track.uri.split(":").pop();
     console.log("-----------------------------------");
-    console.log("New song:", uri);
+    console.log("New song:", filepath);
 
     currentStream = broadcast(filepath);
   }, logErrors);
