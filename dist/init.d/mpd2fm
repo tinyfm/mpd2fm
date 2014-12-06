@@ -6,17 +6,17 @@
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: tinyfm audio playback to FM transmission.
-# Description:       
+# Description:       tinyfm audio playback to FM transmission.
 ### END INIT INFO
 
 # Author: tinyfm
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="Description of the service"
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin
+DESC=tinyfm audio playback to FM transmission."
 NAME=mpd2fm
-DAEMON=/usr/local/bin/node
-DAEMON_ARGS="/home/pi/mpd2fm/script.js"
+DAEMON=$(which mpd2fm)
+DAEMON_ARGS="--start"
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
